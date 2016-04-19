@@ -5,58 +5,28 @@ I'm developed this handler with PostgreSql in mind,
 but it looks like it can be used with any other database even without JSON support.
 
 Artifact does not include direct gson dependencies - it is up to you to add them into your project.
-Looks like you can use any Gson version compatible by API with 2.6.x.
+Looks like you can use any Gson version compatible with API version >= 2.3
+
+[![Release](https://jitpack.io/v/javaplugs/mybatis-gson.svg)](https://jitpack.io/#javaplugs/mybatis-gson)  
+[API javadoc](https://jitpack.io/com/github/javaplugs/mybatis-gson/-SNAPSHOT/javadoc/)
 
 ##How does it work
 Because JDBC does not support JSON types, it transfer JSON to/from database as a string.
-We searialize JSON to string when we are saving and deserialize from string when reading.
+It serialize JSON to string on save and deserialize from string on read.
 This feature means that we are really do not care if our DB can support JSON or not.
 
-###Keep in mind
-You should mind that you should use your DB API to convert JSON string comming from MyBatis 
-to appropriate JSON representation into DB while inserting/updating fields.
-Look into tests for some PostgreSql examples.
-
 ###Lazy reading
-During reading from DB handler return TreeNode wrapper that actually does not parse JSON from string.
+Type handler returns TreeNode wrapper that actually does not parse JSON from string.
 It is waiting for you to call any of its methods - only then it will read JSON into structure.
-But this approach may lead to unexpected runtime exception in a case if your database will return
+But this approach may lead to **unexpected runtime exception** in a case if your database will return
 invalid JSON string.
 
+##Add to your project
 
-## Adding to your project
+You can add this artifact to your project using [JitPack](https://jitpack.io/#javaplugs/mybatis-gson).  
+All versions list, instructions for gradle, maven, ivy etc. can be found by link above.
 
-For now this package is available only via https://jitpack.io/
-
-I'm expecting that you are already have Gson dependencies in your project.
-```compile 'com.google.code.gson:gson:2.+''```
-
-### Gradle dependencies
-```
-repositories {
-  maven {
-    url "https://jitpack.io"
-  }
-}
-
-dependencies {
-  compile 'com.github.javaplugs:mybatis-gson:0.1'
-}
-```
-
-### Maven dependencies
-```
-<repository>
-    <id>jitpack.io</id>
-    <url>https://jitpack.io</url>
-</repository>
-
-<dependency>
-    <groupId>com.github.javaplugs</groupId>
-    <artifactId>mybatis-gson</artifactId>
-    <version>0.1</version>
-</dependency>
-```
+To get latest commit use -SNAPSHOT instead version number.
 
 ## Configure
 In result map configuration you should use ```javaType=com.google.gson.JsonElement"```
